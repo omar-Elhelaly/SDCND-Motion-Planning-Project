@@ -79,7 +79,7 @@ double BehaviorPlannerFSM::get_look_ahead_distance(const State& ego_state) {
   // using a comfortable deceleration.
   // When we use 1g as a suitable deceleration value then we can define
   // the look-ahead distance = v^2 / 9.81
-  auto look_ahead_distance = pow(velocity_mag, 2)/9.81;  // <- Fix This
+  auto look_ahead_distance = pow(velocity_mag, 2) / 9.81;  // <- Fix This
 
   // LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
 
@@ -141,8 +141,8 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
       // use cosine and sine to get x and y
       //
       auto ang = goal.rotation.yaw + M_PI;
-      goal.location.x += _stop_line_buffer * cos(ang);  // <- Fix This
-      goal.location.y += _stop_line_buffer * sin(ang);  // <- Fix This
+      goal.location.x += _stop_line_buffer * std::cos(ang);  // <- Fix This
+      goal.location.y += _stop_line_buffer * std::sin(ang);  // <- Fix This
 
       // LOG(INFO) << "BP- new STOP goal at: " << goal.location.x << ", "
       //          << goal.location.y;
@@ -184,13 +184,13 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
     // TODO-use distance rather than speed: Use distance rather than speed...
     if (utils::magnitude(ego_state.velocity) <=
         _stop_threshold_speed) {  // -> Fix this
-        if (distance_to_stop_sign <= P_STOP_THRESHOLD_DISTANCE) {
-            // TODO-move to STOPPED state: Now that we know we are close or at the
-            // stopping point we should change state to "STOPPED"
-            _active_maneuver = STOPPED;  // <- Fix This
-      _start_stop_time = std::chrono::high_resolution_clock::now();
-      // LOG(INFO) << "BP - changing to STOPPED";
-        }
+      if (distance_to_stop_sign <= P_STOP_THRESHOLD_DISTANCE) {
+        // TODO-move to STOPPED state: Now that we know we are close or at the
+        // stopping point we should change state to "STOPPED"
+        _active_maneuver = STOPPED;  // <- Fix This
+        _start_stop_time = std::chrono::high_resolution_clock::now();
+        // LOG(INFO) << "BP - changing to STOPPED";
+      }
     }
   } else if (_active_maneuver == STOPPED) {
     // LOG(INFO) << "BP- IN STOPPED STATE";
