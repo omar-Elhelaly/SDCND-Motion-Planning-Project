@@ -79,7 +79,7 @@ double BehaviorPlannerFSM::get_look_ahead_distance(const State& ego_state) {
   // using a comfortable deceleration.
   // When we use 1g as a suitable deceleration value then we can define
   // the look-ahead distance = v^2 / 9.81
-  auto look_ahead_distance = pow(velocity, 2)/9.81;  // <- Fix This
+  auto look_ahead_distance = pow(velocity_mag, 2)/9.81;  // <- Fix This
 
   // LOG(INFO) << "Calculated look_ahead_distance: " << look_ahead_distance;
 
@@ -190,6 +190,7 @@ State BehaviorPlannerFSM::state_transition(const State& ego_state, State goal,
             _active_maneuver = STOPPED;  // <- Fix This
       _start_stop_time = std::chrono::high_resolution_clock::now();
       // LOG(INFO) << "BP - changing to STOPPED";
+        }
     }
   } else if (_active_maneuver == STOPPED) {
     // LOG(INFO) << "BP- IN STOPPED STATE";
